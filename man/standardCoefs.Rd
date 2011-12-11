@@ -1,0 +1,107 @@
+\name{standardCoefs}
+\alias{standardCoefs}
+
+\title{
+Standardised regression coefficients
+}
+
+\description{
+Calculates the standardised regression coefficients for a linear model.
+}
+
+\usage{
+standardCoefs(x)
+}
+%- maybe also 'usage' for other objects documented here.
+\arguments{
+  \item{x}{A linear model object (i.e. class \code{lm}).}
+}
+
+\details{Calculates the standardised regression coefficients (beta-weights), namely the values of the regression coefficients that would have been observed has all regressors and the outcome variable been scaled to have mean 0 and variance 1 before fitting the regression model. Standardised coefficients are often useful in some applied contexts since there is some sense in which all beta values are "on the same scale", though this is not entirely unproblematic. 
+}
+
+\value{A matrix with the regressors as rows, and the two different regression coefficients (unstandardised and standardised) as the two columns. The columns are labeled b (unstandardised) and beta (standardised).  
+}
+
+\section{Warning}{This function is under development - I haven't tested it completely yet, and I would like to extend it to include confidence intervals for the beta weights.}
+
+%\references{
+%% ~put references to the literature/web site here ~
+%}
+
+\author{
+Daniel Navarro
+}
+
+
+%% ~Make other sections like Warning with \section{Warning }{....} ~
+
+%\seealso{
+%}
+
+
+\examples{
+### Example 1: simple linear regression ###
+	
+# data	
+X1 <- c(0.69, 0.77, 0.92, 1.72, 1.79, 2.37, 2.64, 2.69, 2.84, 3.41)
+Y  <- c(3.28, 4.23, 3.34, 3.73, 5.33, 6.02, 5.16, 6.49, 6.49, 6.05)
+
+model1 <- lm( Y ~ X1 )   # run a simple linear regression
+coefficients( model1 )  # pull out the raw regression coefficients
+#
+# (Intercept)          X1 
+#    2.717160    1.156674
+#
+
+standardCoefs( model1 ) # extract standardised coefficients
+#
+#           b      beta
+# X1 1.156674 0.8674478
+# 
+
+# For regression models with a single predictor, the standardised 
+# coefficient is identical to the Pearson correlation.  
+cor(X1,Y)  
+# [1] 0.8674478
+
+
+### Example 2: multiple linear regression ###
+
+X2 <- c(0.19, 0.22, 0.95, 0.43, 0.51, 0.04, 0.12, 0.44, 0.38, 0.33) 
+
+model2 <- lm( Y ~ X1 + X2 )   # new model
+standardCoefs( model2 )       # standardised coefficients
+#
+#             b        beta
+# X1  1.1266313  0.84491763
+# X2 -0.4481639 -0.09025427
+#
+
+### Example 3: interaction terms ### 
+
+model3 <- lm( Y ~ X1 * X2 )
+coefficients( model3 )
+#
+# (Intercept)          X1          X2       X1:X2 
+#  3.4155302   0.7945328  -1.8409489   1.0332433
+#
+
+standardCoefs( model3 )
+#
+#                b       beta
+# X1     0.7945328  0.5958602
+# X2    -1.8409489 -0.3701504
+# X1:X2  1.0332433  0.3562668
+#
+
+# Note that these beta values are equivalent to standardising all 
+# three *regressors* including the interaction term X1:X2, not merely 
+# standardising the two predictors X1 and X2.  
+
+}
+
+% Add one or more standard keywords, see file 'KEYWORDS' in the
+% R documentation directory.
+%\keyword{ ~kwd1 }
+%\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

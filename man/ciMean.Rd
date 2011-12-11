@@ -1,0 +1,59 @@
+\name{ciMean}
+\alias{ciMean}
+
+\title{
+Confidence interval around the mean
+}
+
+\description{
+Calculates confidence intervals for the mean of a normally-distributed variable.
+}
+
+\usage{
+ciMean(x, conf = 0.95, na.rm = FALSE)
+}
+\arguments{
+  \item{x}{A numeric vector containing the observations.}
+  \item{conf}{The level of confidence desired. Defaults to a 95\% confidence interval}
+  \item{na.rm}{Logical value indicating whether missing values are to be removed. Defaults to \code{FALSE}.}
+}
+
+\details{
+This function calculates the confidence interval for the mean of a variable, under the standard assumption that the data are normally distributed. By default it returns a 95\% confidence interval (\code{conf = 0.95}) and does not remove missing values (\code{na.rm = FALSE}).  
+}
+
+\value{
+The output is a numeric vector containing the lower and upper ends of the confidence interval.
+}
+
+%\references{
+%% ~put references to the literature/web site here ~
+%}
+
+\author{
+Daniel Navarro
+}
+
+\note{
+This function is more or less equivalent to \code{confint(lm(x ~ 1))}. It exists primarily as a teaching aid, since confidence intervals are usually taught before regression models.
+}
+
+%% ~Make other sections like Warning with \section{Warning }{....} ~
+
+\seealso{
+\code{\link{confint}}
+}
+
+
+\examples{
+X <- c(1, 3, 6)          # data 
+ciMean(X)                # 95 percent confidence interval
+ciMean(X, conf = .8)     # 80 percent confidence interval
+
+confint( lm(X ~ 1) )     # for comparison purposes
+
+X <- c(1, 3, NA, 6)      # data with missing values
+ciMean(X, na.rm = TRUE)  # remove missing values
+
+}
+

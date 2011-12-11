@@ -1,0 +1,30 @@
+## namespace for the lsr package
+## last modified by Daniel Navarro, December 8, 2011
+
+## export 
+export(cohensD,
+etaSquared,
+cramersV,
+standardCoefs,
+posthocPairwiseT,
+unlibrary,
+rmAll,
+quantileCut,
+sortFrame,
+tFrame,
+ciMean,
+aad,
+modeOf,
+maxFreq,
+who,
+importList,
+wideToLong,
+longToWide,
+wideToMV,
+longRM,
+wideRM
+)
+# rmANOVA!!!
+
+## register S3 methods
+S3method(print,whoList)
