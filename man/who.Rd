@@ -7,16 +7,16 @@
 \description{Prints out a simple summary of all the objects in the workspace}
 
 \usage{
-who( expand = TRUE )
+who( expand = FALSE )
 }
 
 
 \arguments{
-\item{expand}{Should R "expand" data frames when listing variables? If \code{expand = TRUE} (default), variables inside a data frame are included in the output.}
+\item{expand}{Should R "expand" data frames when listing variables? If \code{expand = TRUE}, variables inside a data frame are included in the output. The default is \code{FALSE}}
 }
 
 
-\details{The \code{who} function prints out some basic information about all variables in the workspace. Specifically, it lists the names of all variables, what class they are, and how big they are (see below for specifics). If the \code{expand} argument is \code{TRUE} (the default) it will also print out the same information about variables within data frames. See the examples below to see what the output looks like.
+\details{The \code{who} function prints out some basic information about all variables in the workspace. Specifically, it lists the names of all variables, what class they are, and how big they are (see below for specifics). If the \code{expand} argument is \code{TRUE} it will also print out the same information about variables within data frames. See the examples below to see what the output looks like.
 
 The purpose for the function is to show more information than the \code{objects} function (especially as regards the names of variables inside data frames), but not to show as much detail as the \code{ls.str} function, which is generally too verbose for novice users. 
 
@@ -62,21 +62,20 @@ who()
 #
 #  -- Name --      -- Class --   -- Size --
 #  dataset         data.frame    3 x 2     
+#  my.name         character     1         
+#  my.number       numeric       1
+#
+
+# expand the data frame:
+who( expand = TRUE )
+#
+#  -- Name --      -- Class --   -- Size --
+#  dataset         data.frame    3 x 2     
 #   $hi            factor        3         
 #   $pi            numeric       3
 #  my.name         character     1         
 #  my.number       numeric       1
 #
-
-# show it without expanding the data frame:
-who( expand = FALSE )
-#
-#  -- Name --      -- Class --   -- Size --
-#  dataset         data.frame    3 x 2     
-#  my.name         character     1         
-#  my.number       numeric       1
-#
-
 
 ### Example 3 ###
 
@@ -90,9 +89,7 @@ my.formula <- blah ~ blah + blah
 who()
 #
 #  -- Name --      -- Class --   -- Size --
-#  dataset         data.frame    3 x 2     
-#   $hi            factor        3         
-#   $pi            numeric       3               
+#  dataset         data.frame    3 x 2               
 #  my.formula      formula                 
 #  my.name         character     1         
 #  my.number       numeric       1         

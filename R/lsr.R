@@ -185,6 +185,7 @@ tFrame <- function(x) {
 sortFrame <- function(x,..., alphabetical = TRUE){
 
   dots <- as.list(substitute(list(...)))[-1L] # list of quoted sort terms
+  if( length(dots) == 0 ){ return(x) } # do nothing if null arguments
   rel.vars <- unlist(lapply(dots,all.vars)) # which variables are referred to
   y <- lapply(x[rel.vars], xtfrm) # numeric frame that sorts equivalently
   if( alphabetical == TRUE ) { # case conversion if necessary...   
@@ -593,7 +594,7 @@ longRM <- function( data, treatments, measures, between, sep = "_") {
 
 
 
-who <- function(expand = TRUE) {
+who <- function(expand = FALSE) {
      
   # extract a list of objects in the parent environment
   envir <- parent.frame()

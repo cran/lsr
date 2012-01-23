@@ -5,9 +5,9 @@ citEntry(entry="Manual",
 	     Organization = "University of Adelaide",        
          address      = "Adelaide, Australia",
          year         = 2011,
-         note         = "R package version 0.1",
+         note         = "R package version 0.1.1",
          textVersion = 
-         paste("Navarro, D. J. (2011)", 
-               "Learning Statistics with R (lecture notes)",
+         paste("Navarro, D. J. (2012)", 
+               "Learning Statistics with R (2012 lecture notes)",
                "University of Adelaide. Adelaide, Australia")
                )

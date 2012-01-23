@@ -1,0 +1,11 @@
+NEWS file for the lsr package
+
+Version 0.1.1
+
+- The who function now has expand = FALSE as the default.
+- The sortFrame function now correctly returns the original data frame when no sort terms are included.
+
+Version 0.1
+
+- Initial release of the package contains the following functions: aad, ciMean, cohensD, cramersV, etaSquared, importList, longRM, longToWide, maxFreq, modeOf, posthocPairwiseT, quantileCut, rmAll, sortFrame, standardCoefs, tFrame, unlibrary, who, wideRM, wideToLong, wideToMV
+
