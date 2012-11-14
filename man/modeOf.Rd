@@ -28,8 +28,6 @@ Another possibility is to treat \code{NA} as meaning "true value unknown", and t
 Because of the ambiguity of how \code{na.rm = FALSE} should be interpreted, the default value has been set to \code{na.rm = TRUE}, which differs from the default value that I've used elsewhere in the package. 
 }
 
-\section{Warning}{Please note that these functions may change in future versions, and that the \code{na.rm} argument may not even survive in its current form. If I were not constrained by teaching deadlines, these functions would not even be released in this state of development.}
-
 \value{
 The \code{modeOf} function returns the mode of \code{x}. If there are ties, it returns a vector containing all values of \code{x} that have the modal frequency. 
 The \code{maxFreq} function returns the modal frequency as a numeric value.

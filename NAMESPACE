@@ -1,5 +1,5 @@
 ## namespace for the lsr package
-## last modified by Daniel Navarro, December 8, 2011
+## last modified by Daniel Navarro, November 14, 2012
 
 ## export 
 export(cohensD,
@@ -20,11 +20,12 @@ who,
 importList,
 wideToLong,
 longToWide,
-wideToMV,
-longRM,
-wideRM
+permuteLevels,
+colCopy,
+rowCopy,
+expandFactors,
+xfun
 )
-# rmANOVA!!!
 
 ## register S3 methods
 S3method(print,whoList)

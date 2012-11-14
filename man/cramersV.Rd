@@ -20,8 +20,6 @@ Calculates the Cramer's V measure of effect size for a chi-square goodness of fi
 
 \value{A numeric variable with a single element corresponding to the value of V.}
 
-\section{Warning}{This function is under development. Some details may change in later versions.}
-
 %\references{
 %% ~put references to the literature/web site here ~
 %}
@@ -47,21 +45,11 @@ condition2 <- c(35, 30, 35)
 X <- cbind( condition1, condition2 )
 rownames(X) <- c( 'choice1', 'choice2', 'choice3' )
 print(X)
-#         condition1 condition2
-# choice1         30         35
-# choice2         20         30
-# choice3         50         35
-#
 
 # To test the null hypothesis that the distribution of choices
 # is identical in the two conditions, we would run a chi-square
 # test:
-
 chisq.test(X)
-# 	Pearson's Chi-squared test
-# 
-# data:  X 
-# X-squared = 5.0317, df = 2, p-value = 0.0808
 
 # To estimate the effect size we can use Cramer's V:
 cramersV( X )  # returns a value of 0.159

@@ -25,9 +25,6 @@ The "size" of an object is only reported for some kinds of object: specifically,
 
 \value{\code{who} returns an object of class \code{whoList} which is just a data frame with a dedicated print method.}
 
-\section{Warning}{This function is under development, and has been rewritten a few times with slightly different goals in mind. As a consequence the code is not efficient, and may still have bugs.}
-
-
 %\references{}
 
 \author{Daniel Navarro}

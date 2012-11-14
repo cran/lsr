@@ -17,15 +17,168 @@
 # maxFreq
 # wideToLong
 # longToWide
-# wideToMV
-# longRM
-# wideRM
 # who
+# permuteLevels
+# colCopy
+# rowCopy
+# expandFactors
+# xfun
 
 # not for export...
 # print.whoList
 # pooledSD
 
+
+wideToLong <- function( data, within="within", sep="_", split=TRUE) {
+	
+	ind <- grep(sep,names(data)) # indices of variables that are repeated
+	idvar <- names(data)[-ind] # names of id varibles
+	v.names <- unique(gsub( paste(sep,".*$",sep=""), "", names(data)[ind])) # measure var names
+	times <- unique(gsub( paste("^(",paste(v.names,collapse="|"),")",sep,sep=""), "", names(data)[ind])) # measure 'time' names
+	varying <- list()
+	for( i in seq_along(v.names) ) varying[[i]] <- grep( paste("^",v.names[i],sep,sep=""), names(data)[ind], value=TRUE)
+	
+	tmp <-make.unique(c(names(data),"withintmp"))
+	within.tmp <- tmp[length(tmp)]
+	x<-reshape( data, idvar=idvar, varying=varying, direction="long", times=times, v.names=v.names, timevar=within.tmp )
+	
+	if( split==TRUE & length( grep(sep,times))>0 ) { # split multiple treatments into two factors?
+		split.treatments <- tFrame(as.data.frame(strsplit(x[,within.tmp],sep)))
+		if( length(within)==1) { 
+			names(split.treatments) <- paste(within,1:length(split.treatments),sep="") 
+		} else {
+			if( length(within) == length(split.treatments)) {
+				names(split.treatments) <- within 
+			} else { stop( "length of 'within' is incorrect" )}
+		}
+		x <- x[,setdiff(names(x),within.tmp)] # delete collapsed treatment
+		x <- cbind(x,split.treatments) # append split treatment
+	} else { 
+		x[,within.tmp]<- factor(x[,within.tmp])
+		names(x)[grep(within.tmp,names(x))] <- within 
+	}
+	rownames(x) <- NULL
+	names(x) <- make.unique(names(x))
+	return(x)
+	
+}
+
+longToWide <- function( data, formula, sep="_") {
+	
+	within <- all.vars(formula[-2])
+	v.names <- all.vars(formula[-3])
+	idvar <- setdiff(names(data),c(within,v.names)) 
+	
+	if( length(within)>1 ) { 
+		collapsed.treatments <- apply(as.matrix(data[,within]),1,paste,collapse="_")
+		data <- data[,setdiff(names(data),within)] # delete split treatments
+		data$within <- collapsed.treatments # append collapsed treatment
+		within <- "within"
+	}
+	times <- unique( data[,within]) # measure 'time' names
+	varying <- list()
+	for( i in seq_along(v.names) ) varying[[i]] <- paste(v.names[i],times, sep=sep)
+	
+	x<-reshape( data, idvar=idvar, varying=varying, direction="wide", times=times, v.names=v.names, timevar=within)
+	rownames(x) <- NULL
+	return(x)
+	
+}
+
+expandFactors <- function( data, ... ) {
+ 
+  df <- model.matrix( as.formula( paste("~",names(data),collapse="+")), data, ... )
+  df <- df[,-1]
+  attr(df,"contrasts") <- NULL
+  attr(df,"assign") <- NULL
+
+  return(df)
+}
+
+xfun <- function( formula, data = NULL, fun, subset = NULL, split = TRUE, ... ) {
+  
+  # check that formula is a two-sided formula
+  if( class(formula) != "formula" ) stop( "formula input must be a formula") 
+  if( length(formula) < 3) stop( "formula must be two-sided" )
+  
+  # get the list of variables included in the formula
+  vars <- all.vars( formula )  
+  
+  # check that the formula has only one LHS variable
+  if( length(vars) != length(all.vars(formula[-2])) +1 ) stop( "only one outcome variable may be specified" )
+  
+  # if variables are not in data frame, check that they are appropriate and then construct one
+  if( is.null(data) ) {
+    
+    # check that the variables exist
+    okay <- sapply(vars,exists)
+    if ( !all(okay)) stop( paste("unable to find variable(s):",paste(names(okay)[!okay],collapse=", ")) )
+    
+    # place all the variables in a list
+    data<-lapply(vars,get) 
+    
+    # check that the variables are all vectors
+    if(!all(sapply(data,is.vector))) stop( "variables must be vectors" )
+    
+    # check that the vectors are of the same length
+    var.lengths<-sapply(data,length)
+    if(all(var.lengths!=var.lengths[1])) stop( "variables are not of the same length" )
+    
+    # construct data frame
+    data<-as.data.frame(data)
+    names(data)<-vars
+  } else {
+    
+    # check that the variables exist within the data frame
+    
+  }
+  
+  # use tapply to apply fun separately to outcome by group
+  if( is.null(subset) ) { 
+    x <- tapply( data[,vars[1]], data[,vars[-1]], fun, ... )
+  } else {
+    x <- tapply( data[subset,vars[1]], data[subset,vars[-1]], fun, ... ) 
+  }
+  
+  # if the output is mode list & the user has requested a split output, split it
+  if( mode(x) == "list" & split == TRUE )  {
+    
+    # check to see if the contents of x are always vectors
+    is.vector <- apply(x,1:length(dim(x)),function(l){is.vector(l[[1]])})
+    
+    if( all(is.vector) ){ 
+      max.len <- max(apply(x,1:length(dim(x)),function(l){length(l[[1]])}))
+      y <- list()
+      for( i in 1:max.len) y[[i]] <- apply(x,1:length(dim(x)),function(l,ind){l[[1]][ind]}, i )
+      x <- y
+    } else {
+      warning( paste("output of function is not a vector: returning array of lists, not list of arrays" ))
+    }
+    
+  }
+  
+  return(x)
+  
+}
+
+colCopy <- function(x,times, dimnames=NULL ) {
+  if( is.null(dimnames) ) dimnames<-list(names(x),character(0)) 
+  matrix( x, length(x), times, byrow=FALSE, dimnames )
+}
+
+rowCopy <- function(x,times, dimnames=NULL ) {
+  if( is.null(dimnames) ) dimnames<-list(character(0),names(x))
+  matrix( x, times, length(x), byrow=TRUE, dimnames )
+}
+
+permuteLevels <- function(x,perm,ordered = is.ordered(x),invert=FALSE) {
+  if(invert){ perm <- order(perm) }
+  y <- factor( x = order(perm)[as.numeric(x)],
+                 levels = seq_along(levels(x)),
+                 labels = levels(x)[perm],
+                 ordered = ordered ) 
+  return(y)
+}
 
 
 standardCoefs <- function( x ) {
@@ -120,32 +273,80 @@ pooledSD <- function(x,y,debias = TRUE) {
 }
 
 
-etaSquared<- function( x ) {
+etaSquared<- function( x, type = 2, anova = FALSE ) {
   
-  # get the ANOVA table
-  anova.table <- summary.aov( x )[[1]]
+  if( type == 1) {
+      
+    ss <- anova(x)[,"Sum Sq",drop=FALSE]  # Type 1 SS 
+    ss.res <- ss[dim(ss)[1],]  # Full model RSS
+    ss.tot <- sum( ss )  # Total SS 
+    ss <- ss[-dim(ss)[1],,drop=FALSE]
+    
+  } else { if (type == 2) {
+      
+    ss.tot <- sum(( x$model[,1] - mean(x$model[,1]) )^2)
+    ss.res <- sum(( x$residuals)^2)
+    t <- attr(x$terms,"term.labels")
+    ord <- attr(x$terms,"order")
+    max.ord <- max(ord)
+    ss <- matrix(NA,length(t),1)
+    rownames(ss) <- t
+    for( i in seq_along(ss) ) {
+      
+      # find the i-th term plus its higher order terms
+      if( length( grep(":",t[i]) )>0 ) {
+        ti <- seq_along(t) 
+        vi <- unlist(strsplit(t[i],":"))
+        for( v in vi ) ti <- intersect(ti, grep(v,t)) 
+      } else {
+        ti <- grep(t[i],t)
+      }
+    
+      # now calculate the corresponding ss value
+      m0 <- lm( x$terms[-ti], x$model )  # remove all of these
+      if( ord[i] < max.ord) {
+        m1 <- lm( x$terms[-setdiff(ti,i)], x$model ) # remove all except i-th term
+        ss[i] <- anova(m0,m1)$`Sum of Sq`[2] # get the ss value
+      } else {
+        ss[i] <- anova(m0,x)$`Sum of Sq`[2]
+      }
+    }
+    
+    
+  } else { if (type == 3) { 
+    
+    ss <- drop1(x,scope=x$terms)[-1,"Sum of Sq",drop=FALSE] # Type 3 SS
+    ss.res <- ss[dim(ss)[1],]  # Full model RSS
+    ss.tot <- sum(( x$model[,1] - mean(x$model[,1]) )^2)
+    
+  } else { 
+    stop("type must be equal to 1,2 or 3") 
+  }}} 
   
-  # read off the useful parts of the ANOVA table
-  term.names <- rownames(anova.table)
-  ss <- anova.table$`Sum Sq`
   
-  # some useful conversion
-  k <- length(ss) - 1 # number of terms in the model
-  ss.resid <- ss[k + 1] # read off the residual ss
-  ss.tot <- sum(ss) # calculate the total ss
-  ss <- ss[1:k] # drop "residuals" from the ss vector
-  term.names <- term.names[1:k] # drop "residuals" from term names
+  if( anova == FALSE) {
+    eta2 <- ss / ss.tot
+    eta2p <- ss / (ss + ss.res)
+    E <- cbind(eta2, eta2p)
+    rownames(E) <- rownames(ss)
+    colnames(E) <- c("eta.sq","eta.sq.part")
   
-  # compute eta-squared and partial eta-squared
-  eta.squared <- ss / ss.tot
-  partial.eta.squared <- ss / (ss + ss.resid)
-
-  # convert to matrix
-  E <- cbind(eta.squared, partial.eta.squared)
-  colnames(E) <- c("eta.sq","partial.eta.sq")
-  rownames(E) <- term.names
-
-  # return
+  } else {
+    ss <- rbind( ss, ss.res )
+    eta2 <- ss / ss.tot
+    eta2p <- ss / (ss + ss.res)  
+    k <- length(ss)
+    eta2p[k] <- NA
+    df <- anova(x)[,"Df"] # lazy!!!
+    ms <- ss/df
+    Fval <- ms / ms[k]
+    p <- 1-pf( Fval, df, rep.int(df[k],k) ) 
+    E <- cbind(eta2, eta2p, ss, df, ms, Fval, p)
+    E[k,6:7] <- NA
+    colnames(E) <- c("eta.sq","eta.sq.part","SS","df","MS","F","p")
+    rownames(E) <- rownames(ss) 
+    rownames(E)[k] <- "Residuals"
+  }
   return(E)
 
 }
@@ -332,9 +533,11 @@ modeOf <- function(x, na.rm = TRUE) {
     modal.cases <- freq == max.freq                   # otherwise find modal cases
     modal.values <- obs.val[modal.cases]              # and corresponding values
   }
+  if(class(x)=="factor") modal.values <- as.character(modal.values)
   return( modal.values )
   
 }
+
   
 maxFreq <- function(x, na.rm = TRUE) {
 
@@ -346,248 +549,6 @@ maxFreq <- function(x, na.rm = TRUE) {
   freq <- unlist((lapply( obs.val, valFreq, x )))     # apply for all unique values
   max.freq <- max(freq, na.freq)                      # modal frequency    
   return( max.freq )                                 
-  
-}
-   
-wideToLong <- function(data, rms = NULL, ...) {
-
-  # get the repeated measures info
-  if( is.null( rms ) ) {
-    rms <- wideRM( data , ...)
-  }
-  
-  # loop over the repeated measures outcomes
-  factor.names <- colnames(rms$within)[-(1:2)]
-  cells <- unique(rms$within[-(1:2)] )  # all possible combinations
-  measures <- levels(rms$within$measure) # all measures taken 
-  rownames(cells) <- NULL  # this is for my sanity
-  n.treat <- length(cells[[1]]) # how many treatments
-
-  ### this seems inefficient ###
-  
-  # loop over subjects
-  n.subj <- length( data[[1]] )
-  for (i in 1:n.subj ) {
-    
-    X <- data[ i, rms$between, drop = FALSE ]  # get the between info for this subject
-    X <- as.data.frame( lapply(X, rep, n.treat) ) # make one copy per treatment
-    X[ measures ] <- NA # initialise the measures
-    X[ names(cells) ] <- cells  # attach treatment information
-    
-    # loop over treatments, adding the relevant information  
-    for ( j in 1:n.treat ) {
-      tmp <- merge( rms$within, cells[j,,drop=FALSE] ) # matching
-      m <- as.character( tmp$measure ) # measure name
-      wn <- as.character(tmp$wide.name) # wide variable name
-      X[ j,m ] <- data[ i,wn ] # assign
-    }
-    
-    # store it
-    if (i == 1) { out <- X }  # initialise output
-    else { out <- rbind(out,X) } # or append to it
-    
-  }
-  
-  return(out)
-  
- }
-
-
-longToWide <- function(data, rms = NULL, ... ) {
-  
-  # get the repeated measures info
-  if( is.null( rms ) ) {
-    rms <- longRM( data , ...)
-  }
-  
-  # data frame containing between-subjects variables
-  between <- unique( data[ rms$between ] ) 
-  
-  # counts
-  n.subj <- length( between[[1]] )  # number of unique entities
-  n.vars <- length( rms$within[[1]] )  # number of within-variables
-  n.obs <- length( data[[1]] )  # number of observations in long form
-  n.measures <- nlevels( rms$within$measure ) # number of measure vars
-  
-  # initialise the within-subjects variables
-  within <- matrix( nrow = n.subj, ncol = n.vars )  # empty matrix
-  within <- as.data.frame( within )  # convert to data frame
-  names( within ) <- rms$within$wide.name # name the variables
-  
-  
-  # define the "inject" function, which matches each row of the "full",
-  # data frame against a row of the "unique" data frame. I'm not happy with
-  # this function at all, and when I get time to go searching I'll replace
-  # this part with a better method.
-  inject <- function(full, unique) {
-    n.obs <- length( full[[1]] )  # rows in the full data frame
-    n.unique <- length( unique[[1]] ) # rows in the unique frame
-    n.vars <- length( full )  # columns in both
-    out <- vector( length = n.obs ) # initialise the output
-    for( u in 1:n.unique) {        # loop over all unique cases
-      matches <- rep(TRUE, n.obs)  # initially, everything matches
-      for( v in 1:n.vars ) {       # loop over all variables
-        matches <- matches & ( full[,v]==unique[u,v] ) # does next variable match?
-      }
-      out[which(matches)] <- u  # update the output
-    }
-    return(out)  
-  }
- 
-  # now use the inject function to find indices governing the mapping from 
-  # the long form rows to the corresponding wide form rows
-  ind <- inject( data[rms$between], between )
-  
-  M <- levels( rms$within$measure )  # measure names
-  Tr <- names( rms$within[-(1:2)] )  # treatment names
-  
-  
-  for ( o in 1:n.obs ) {  # loop over rows in the long form matrix
-
-    # logicals indicating the rms$within  cases that match obs o on the treatments
-    ind2 <- inject( rms$within[Tr], data[o,Tr,drop=FALSE] ) == 1
-    
-    for (m in M) {  # loop over the measure variables
-      
-      tmp <- ind2 & rms$within$measure == m  # matches to ind2 & to the measure name
-      wn <- rms$within$wide.name[ tmp ] # grab corresponding wide name
-      wn <- as.character( wn )  # ensure this is character     
-      within[ ind[o], wn ] <- data[o,m] # assignment
-    }
-  }
-  
-  # output
-  return( cbind(between, within) )
-  
-}  
-
-
-
-wideToMV <- function( data, rms = NULL, ...) {
-
-  # convert from wide form to multivariate form
-  # don't change the wide form names, even though they seem redundant:
-  # useful for specifying RM-ANOVA
-  
-  # get the repeated measures info
-  if( is.null( rms ) ) {
-    rms <- wideRM( data , ...)
-  }
-  
-  mv <- levels( rms$within$measure )  # the repeated measures 
-  out <- list()  # initialise the outputs
-  
-  for( i in  1:length(mv) ) { # loop over measures
-    
-    ln <- with( rms$within, wide.name[measure == mv[i]] )  # long names  
-    ln <- as.character( ln )  # convert to character 
-    out[[i]] <- as.matrix( data[, ln] )  # construct matrix and store it
-
-  } 
-  
-  names(out) <- mv  # give the matrices the right names
-  out[ rms$between ] <- data[ rms$between ]  # add the between subjects info
-    
-  return(out)
-  
-}
-
-
-
-wideRM <- function(data, treatments = NULL, sep = "_") {
-  
-    # wideRM() is a function that takes a data frame (data) as input, and constructs 
-    # a repeated measures structure as output. The data frame is assumed to be in 
-    # wide form, with the variable naming following a logical scheme. Specifically
-    # any repeated measure variable should be named: 
-    # 
-    #      Measurement_Treatment1Level_Treatment2Level 
-    #
-    # etc. The separator character doesn't have to be "_" though; but must not be
-    # present in any purely between subject variables. The "treatments" input is a
-    # character vector naming each of the treatments (since the variable names only
-    # specify the levels). If unspecified, assumed to be c("treatment.1", 
-    # "treatment.2", etc)
-    #
-    # The output of the function is a list with two elements, "within" and "between".
-    # The "between" part is simply a character vector naming the between-subject 
-    # variables. The "within" part is a data frame with several variables. The first
-    # is the "wide.name" (name of the variable in wide form), the second is "measure"
-    # (the name of the measurement taken) and the others contain the various 
-    # treatments.
-    
-  
-    # identify the within and between subject variables, and their names
-    var.names <- strsplit( names(data), sep ) # a list, one element per var
-    n.names <- unlist(lapply( var.names, length)) # a vector indicating how many names
-    between.vars <- n.names == 1  # between subj vars have no separators
-    within.vars <- !between.vars  # for convenience
-  
-    # check that the number of separators is consistent:
-    if ( length(unique(n.names[within.vars])) != 1) {
-      stop("within-subject variables must have the same number of separators")
-    }
-  
-    # store the betweens by name:
-    between <- unlist(var.names[ between.vars ])
-  
-    # construct a data frame with the within data:
-    within <- t(as.data.frame( var.names[ within.vars ]))  # matrix
-    within <- cbind( names(data)[within.vars], within)  # append widename
-    rownames(within) <- NULL
-    n.rm <- n.names[within.vars][1] -1 # number of rm factors
-    if (is.null(treatments)) { treatments <- paste("treatment",1:(n.rm),sep=".") }
-    else { if(length(treatments) != n.rm) { stop("incorrect number of 'treatments' listed") } }
-    colnames(within) <- c('wide.name','measure',treatments)
-    within <- as.data.frame( within )
-  
-    # return
-    return(list(within = within, between = between))
-    
-}
-
-
-
-longRM <- function( data, treatments, measures, between, sep = "_") {
-  
-    # longRM() is a function that takes a data frame (data) as input, and constructs 
-    # a repeated measures structure as output. The data frame is assumed to be in 
-    # long form: the between subject variables (e.g., subject id) are all replicated
-    # several times. Each treatment is a separate variable, as is each measurement
-    # taken. The user needs to specify which variables correspond to the treatments,
-    # which ones correspond to the repeated measures, and which are the between subject
-    # variables.
-    #
-    # The output of the function is a list with two elements, "within" and "between".
-    # The "between" part is simply a character vector naming the between-subject 
-    # variables. The "within" part is a data frame with several variables. The first
-    # is the "wide.name" (name of the variable in wide form), the second is "measure"
-    # (the name of the measurement taken) and the others contain the various 
-    # treatments.  
-  
-    # create W, a matrix containing all unique treatment combinations that
-    # exist anywhere in the data set.
-    W <- unique( data[treatments] )  # grab all observed treatments
-    W$wide.name <- NA # initialise wide.name variable
-    W$measure <- NA   # initialise measure
-    nm <- length( measures )  # number of repeated measures
-    W <- W[ c( nm+1,nm+2,1:nm ) ] # permute the order of columns
-    
-    # populate W with specific info for each measure, and append
-    for ( m in 1:nm ) { # loop over measures
-      W$measure <- measures[ m ] # record the measure
-      if  (m==1) { within <- W } # either initialise "within"...
-      else { within <- rbind( within, W ) } # ... or append W to it.
-    }
-    
-    # collapse the measures & treatments to contruct the wide form names
-    within$wide.name <- apply( within[-1], 1, paste, collapse = "_" )
-    
-    # convert to factors
-    within$measure <- as.factor( within$measure )
-    
-    # return both components in a list
-    return( list( within = within, between = between ) )
   
 }
 

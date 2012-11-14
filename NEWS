@@ -1,5 +1,11 @@
 NEWS file for the lsr package
 
+Version 0.2
+
+- New functions: rowCopy, colCopy, permuteLevels, expandFactors, xfun
+- The etaSquared function now supports Type II and Type III sum of squares
+- Clean up of the repeated measures reshaping functions. 
+
 Version 0.1.1
 
 - The who function now has expand = FALSE as the default.
