@@ -26,7 +26,7 @@ This function is currently just a wrapper function for \code{\link{pairwise.t.te
 
 \value{As per \code{pairwise.t.test}}
 
-\section{Warning}{This function is under development. The internals to the function will almost certainly change: in particular the \code{p.adjust.method} argument from the \code{pairwise.t.test} will very likely change to \code{method}, matching the \code{p.adjust} function instead.}
+\section{Warning}{This package is under development, and has been released only due to teaching constraints. Until this notice disappears from the help files, you should assume that everything in the package is subject to change. Backwards compatibility is NOT guaranteed. Functions may be deleted in future versions and new syntax may be inconsistent with earlier versions. For the moment at least, this package should be treated with extreme caution.}
 
 %\references{
 %% ~put references to the literature/web site here ~
@@ -40,7 +40,7 @@ Daniel Navarro
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{pairwise.t.test}}, \code{\link{TukeyHSD}}, \code{glht} (in the \code{multcomp} package)
+\code{\link{pairwise.t.test}}, \code{\link{TukeyHSD}}, \code{glht} (in the \pkg{multcomp} package)
 }
 
 

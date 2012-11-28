@@ -1,5 +1,10 @@
 NEWS file for the lsr package
 
+Version 0.2.1
+
+- Warning statements in the help files are more explicit regarding (lack of) backwards compatibility for pre-1.0 versions of the package
+- xfun removed from package (duplicates existing functionality). 
+
 Version 0.2
 
 - New functions: rowCopy, colCopy, permuteLevels, expandFactors, xfun

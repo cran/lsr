@@ -28,6 +28,7 @@ For unbalanced designs, the default in \code{etaSquared} is to compute Type II s
 If \code{anova=FALSE}, the output is an M x 2 matrix. Each of the M rows corresponds to one of the terms in the ANOVA (e.g., main effect 1, main effect 2, interaction, etc), and each of the columns corresponds to a different measure of effect size. Column 1 contains the eta-squared values, and column 2 contains partial eta-squared values. If \code{anova=TRUE}, the output contains additional columns containing the sums of squares, mean squares, degrees of freedom, F-statistics and p-values.
 }
 
+\section{Warning}{This package is under development, and has been released only due to teaching constraints. Until this notice disappears from the help files, you should assume that everything in the package is subject to change. Backwards compatibility is NOT guaranteed. Functions may be deleted in future versions and new syntax may be inconsistent with earlier versions. For the moment at least, this package should be treated with extreme caution.}
 
 %\references{
 %% ~put references to the literature/web site here ~

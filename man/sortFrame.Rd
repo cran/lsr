@@ -25,8 +25,7 @@ It is also possible to specify more complicated sort terms by including expressi
 
 \value{The sorted data frame}
 
-\section{Warning}{This is still under development, and currently it does NO exception handling at all. Although some testing has been done (enough to satisfy the needs of my 2012 stats class), there may still be bugs. Care is advised.}
-
+\section{Warning}{This package is under development, and has been released only due to teaching constraints. Until this notice disappears from the help files, you should assume that everything in the package is subject to change. Backwards compatibility is NOT guaranteed. Functions may be deleted in future versions and new syntax may be inconsistent with earlier versions. For the moment at least, this package should be treated with extreme caution.}
 
 %\references{
 %% ~put references to the literature/web site here ~

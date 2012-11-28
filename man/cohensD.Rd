@@ -25,6 +25,7 @@ The last argument to \code{cohensD} is \code{mu}, which represents an offset par
 \value{Numeric variable containing the effect size, d. Note that it does not show the direction of the effect, only the magnitude. That is, the value of d returned by the function is always positive or zero.
 }
 
+\section{Warning}{This package is under development, and has been released only due to teaching constraints. Until this notice disappears from the help files, you should assume that everything in the package is subject to change. Backwards compatibility is NOT guaranteed. Functions may be deleted in future versions and new syntax may be inconsistent with earlier versions. For the moment at least, this package should be treated with extreme caution.}
 
 \references{
 Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Hillsdale, NJ: Lawrence Erlbaum Associates.
