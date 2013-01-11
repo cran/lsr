@@ -31,19 +31,22 @@
 
 wideToLong <- function( data, within="within", sep="_", split=TRUE) {
 	
-	ind <- grep(sep,names(data)) # indices of variables that are repeated
-	idvar <- names(data)[-ind] # names of id varibles
-	v.names <- unique(gsub( paste(sep,".*$",sep=""), "", names(data)[ind])) # measure var names
-	times <- unique(gsub( paste("^(",paste(v.names,collapse="|"),")",sep,sep=""), "", names(data)[ind])) # measure 'time' names
+	ind <- grep(sep,names(data),fixed=TRUE) # indices of variables that are repeated
+	idvar <- names(data)[-ind] # names of id variables
+	tmp <- t(as.data.frame(strsplit( names(data[ind]), sep, fixed=TRUE ))) # matrix with split var names
+	v.names <- unique(tmp[,1]) # grab the measure var names
+	times <- unique(apply( tmp[,-1,drop=FALSE],1,paste,collapse=sep)) # measure 'time' names
 	varying <- list()
-	for( i in seq_along(v.names) ) varying[[i]] <- grep( paste("^",v.names[i],sep,sep=""), names(data)[ind], value=TRUE)
+	for( i in seq_along(v.names) ) varying[[i]] <- names(data)[ind][tmp[,1]==v.names[i]] 
 	
 	tmp <-make.unique(c(names(data),"withintmp"))
 	within.tmp <- tmp[length(tmp)]
 	x<-reshape( data, idvar=idvar, varying=varying, direction="long", times=times, v.names=v.names, timevar=within.tmp )
 	
-	if( split==TRUE & length( grep(sep,times))>0 ) { # split multiple treatments into two factors?
-		split.treatments <- tFrame(as.data.frame(strsplit(x[,within.tmp],sep)))
+	if( split==TRUE & length( grep(sep,times,fixed=TRUE))>0 ) { # split multiple treatments into two factors?
+		split.treatments <- t(as.data.frame(strsplit(x[,within.tmp],sep,fixed=TRUE)))
+		rownames(split.treatments)<-NULL
+		split.treatments <- as.data.frame(split.treatments)
 		if( length(within)==1) { 
 			names(split.treatments) <- paste(within,1:length(split.treatments),sep="") 
 		} else {
@@ -70,7 +73,7 @@ longToWide <- function( data, formula, sep="_") {
 	idvar <- setdiff(names(data),c(within,v.names)) 
 	
 	if( length(within)>1 ) { 
-		collapsed.treatments <- apply(as.matrix(data[,within]),1,paste,collapse="_")
+		collapsed.treatments <- apply(as.matrix(data[,within]),1,paste,collapse=sep)
 		data <- data[,setdiff(names(data),within)] # delete split treatments
 		data$within <- collapsed.treatments # append collapsed treatment
 		within <- "within"
@@ -99,11 +102,17 @@ expandFactors <- function( data, ... ) {
 colCopy <- function(x,times, dimnames=NULL ) {
   if( is.null(dimnames) ) dimnames<-list(names(x),character(0)) 
   matrix( x, length(x), times, byrow=FALSE, dimnames )
+
+  # alternative code:
+  # replicate(times,x)
 }
 
 rowCopy <- function(x,times, dimnames=NULL ) {
   if( is.null(dimnames) ) dimnames<-list(character(0),names(x))
   matrix( x, times, length(x), byrow=TRUE, dimnames )
+
+  # alternative code:
+  # t(replicate(times,x))
 }
 
 permuteLevels <- function(x,perm,ordered = is.ordered(x),invert=FALSE) {

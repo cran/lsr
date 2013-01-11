@@ -4,10 +4,10 @@ citEntry(entry="Manual",
          author = "Daniel Navarro",
 	     Organization = "University of Adelaide",        
          address      = "Adelaide, Australia",
-         year         = 2012,
-         note         = "R package version 0.2.1",
+         year         = 2013,
+         note         = "R package version 0.2.2",
          textVersion = 
-         paste("Navarro, D. J. (2012)", 
+         paste("Navarro, D. J. (2013)", 
                "Learning statistics with R: A tutorial for psychology students and other beginners.",
                "University of Adelaide. Adelaide, Australia")
                )

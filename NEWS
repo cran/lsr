@@ -1,5 +1,9 @@
 NEWS file for the lsr package
 
+Version 0.2.2
+
+- Fixed a bug with longToWide and wideToLong in which variable names were being treated as regular expressions
+
 Version 0.2.1
 
 - Warning statements in the help files are more explicit regarding (lack of) backwards compatibility for pre-1.0 versions of the package

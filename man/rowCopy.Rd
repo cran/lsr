@@ -44,7 +44,7 @@ For \code{rowCopy}, the output is a matrix with \code{times} rows and \code{leng
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
- \code{\link{matrix}}, \code{\link{rbind}}
+ \code{\link{matrix}}, \code{\link{rbind}}, \code{\link{replicate}}
 }
 
 \examples{
