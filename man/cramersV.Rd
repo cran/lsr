@@ -15,8 +15,7 @@ cramersV(...)
 }
 
 \details{
-Calculates the Cramer's V measure of effect size for a chi-square goodness of fit test. The arguments to the \code{cramersV} function are all passed straight to the \code{chisq.test} function, and should have the same format.
-}
+Calculates the Cramer's V measure of effect size for chi-square tests of association and goodness of fit. The arguments to the \code{cramersV} function are all passed straight to the \code{chisq.test} function, and should have the same format.}
 
 \value{A numeric variable with a single element corresponding to the value of V.}
 

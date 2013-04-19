@@ -1,5 +1,9 @@
 NEWS file for the lsr package
 
+Version 0.2.3
+
+- Fixed a bug in which cramersV was incorrectly calculated when used as a measure of effect size in a goodness of fit test.
+
 Version 0.2.2
 
 - Fixed a bug with longToWide and wideToLong in which variable names were being treated as regular expressions
