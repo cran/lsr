@@ -4,7 +4,7 @@
 \title{Cohen's d}
 \description{Calculates the Cohen's d measure of effect size.}
 
-\usage{ cohensD( x, y = NULL, data = NULL, method = "pooled", mu = 0 ) }
+\usage{ cohensD( x = NULL, y = NULL, data = NULL, method = "pooled", mu = 0, formula = x ) }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{Either a numeric variable containing the data for group 1, or a formula of the form \code{outcome ~ group}}
@@ -12,6 +12,7 @@
   \item{data}{If \code{x} is a formula, then \code{data} is an optional argument specifying data frame containing the variables in the formula.}
   \item{method}{Which version of the d statistic should we calculate? Possible values are \code{"pooled"} (the default), \code{"x.sd"}, \code{"y.sd"}, \code{"corrected"}, \code{"raw"}, \code{"paired"} and \code{"unequal"}. See below for specifics. }
   \item{mu}{The "null" value against which the effect size should be measured. This is almost always 0 (the default), so this argument is rarely specified.}
+  \item{formula}{An alias for \code{x} if a formula is used. Included for the sake of consistency with the \code{t.test} function.}
 }
 
 \details{The \code{cohensD} function calculates the Cohen's d measure of effect size in one of several different formats. The function is intended to be called in one of two different ways, mirroring the \code{t.test} function. That is, the first input argument \code{x} is a formula, then a command of the form \code{cohensD(x = outcome~group, data = data.frame)} is expected, whereas if \code{x} is a numeric variable, then a command of the form \code{cohensD(x = group1, y = group2)} is expected. Note that \code{cohensD} is not a generic function.
