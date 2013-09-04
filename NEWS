@@ -1,5 +1,18 @@
 NEWS file for the lsr package
 
+Version 0.3
+
+- bars function added
+- correlate function added
+- in general, there is a lot more checking of the user input
+- pooledSD moved to a sub-function of cohensD.
+- formula argument to cohensD is now handled using model.frame
+- expandFactors now returns a data frame rather than a matrix (and does so correctly for data frames with only one row)
+- expandFactors no longer drops cases with NA
+- fixed bug in wideToLong in which the reshape function tries to create non-unique row names
+- fixed bug in quantileCut when missing data are present
+- ciMean now handles data frames and matrices
+
 Version 0.2.4
 
 - Fixed a bug in etaSquared that prevented it from correctly determining marginal terms in Type II sum of squares, and another one in which the residual sum of squares was being calculated incorrectly

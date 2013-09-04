@@ -1,5 +1,5 @@
 ## namespace for the lsr package
-## last modified by Daniel Navarro, November 28, 2012
+## last modified by Daniel Navarro, September 4, 2013
 
 ## export 
 export(cohensD,
@@ -23,8 +23,11 @@ longToWide,
 permuteLevels,
 colCopy,
 rowCopy,
-expandFactors
+expandFactors,
+correlate,
+bars
 )
 
 ## register S3 methods
 S3method(print,whoList)
+S3method(print,correlate)

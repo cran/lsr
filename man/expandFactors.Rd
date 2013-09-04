@@ -44,8 +44,8 @@ A data frame.
 
 \examples{
 grading <- data.frame( teacher = factor( c("Amy","Amy","Ben","Ben","Cat") ), 
-					   gender = factor( c("male","female","female","male","male") ),
-					   grade = c(75,80,45,50,65) )
+                       gender = factor( c("male","female","female","male","male") ),
+                       grade = c(75,80,45,50,65) )
 
 # expand factors using the default contrasts (usually treatment contrasts)
 expandFactors( grading )

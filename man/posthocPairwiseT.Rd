@@ -46,7 +46,7 @@ Daniel Navarro
 
 \examples{# create the data set to analyse: 	
 dataset <- data.frame( 
-	        outcome = c( 1,2,3, 2,3,4, 5,6,7 ),
+            outcome = c( 1,2,3, 2,3,4, 5,6,7 ),
             group = factor(c( "a","a","a", "b","b","b","c","c","c")) 
            )
 

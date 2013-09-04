@@ -4,7 +4,7 @@
 \title{Cohen's d}
 \description{Calculates the Cohen's d measure of effect size.}
 
-\usage{ cohensD( x = NULL, y = NULL, data = NULL, method = "pooled", mu = 0, formula = x ) }
+\usage{ cohensD( x = NULL, y = NULL, data = NULL, method = "pooled", mu = 0, formula = NULL ) }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{Either a numeric variable containing the data for group 1, or a formula of the form \code{outcome ~ group}}
@@ -25,6 +25,8 @@ The last argument to \code{cohensD} is \code{mu}, which represents an offset par
 }
 \value{Numeric variable containing the effect size, d. Note that it does not show the direction of the effect, only the magnitude. That is, the value of d returned by the function is always positive or zero.
 }
+
+\section{Note}{The \code{cohensD} function attempts to check whether the arguments specified by the user make sense. For instance, specifying numeric variables \code{x} and \code{y} together with a mean \code{mu} does not make sense, since the \code{x} and \code{y} values imply a two-sample calculation, buy \code{mu} implies a one sample calculation. I've attempted to catch every meaningful case, allowing a certain amount of flexibility recognising that novice users will sometimes forget to name arguments when they should (e.g., it actually allows a data frame \code{x} and formula \code{formula}, to capture cases where the user inputs something like \code{cohensD(formula= outcome~group, myDataFrame)}). There may be mistakes in the cases allowed however.}
 
 \section{Warning}{This package is under development, and has been released only due to teaching constraints. Until this notice disappears from the help files, you should assume that everything in the package is subject to change. Backwards compatibility is NOT guaranteed. Functions may be deleted in future versions and new syntax may be inconsistent with earlier versions. For the moment at least, this package should be treated with extreme caution.}
 
