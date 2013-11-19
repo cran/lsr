@@ -1,5 +1,10 @@
 NEWS file for the lsr package
 
+Version 0.3.1
+
+- cohensD argument checking is more permissive
+- convenience functions oneSampleTTest, pairedSamplesTTest and independentSamplesTTest added
+
 Version 0.3
 
 - bars function added

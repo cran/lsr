@@ -1,5 +1,5 @@
 ## namespace for the lsr package
-## last modified by Daniel Navarro, September 4, 2013
+## last modified by Daniel Navarro, November 16, 2013
 
 ## export 
 export(cohensD,
@@ -25,9 +25,13 @@ colCopy,
 rowCopy,
 expandFactors,
 correlate,
-bars
+bars,
+oneSampleTTest,
+pairedSamplesTTest,
+independentSamplesTTest
 )
 
 ## register S3 methods
 S3method(print,whoList)
 S3method(print,correlate)
+S3method(print,TTest)

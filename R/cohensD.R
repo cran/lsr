@@ -1,7 +1,7 @@
 # file:    cohensD.R 
 # author:  Dan Navarro
 # contact: daniel.navarro@adelaide.edu.au
-# changed: 13 November 2013
+# changed: 16 November 2013
 
 # cohensD() computes Cohen's d measure of effect size for the difference 
 # between two sample means
@@ -90,7 +90,9 @@ cohensD <- function(x = NULL, y = NULL, data = NULL, method = "pooled",  mu = 0,
     
     if( is(x,"formula") & is(method,"character") & length(method)==1 ) {
       scenario <- "two.sample.formula"
-      if( method=="paired") { scenario <- "bad" } # can't do paired samples this way
+      if( method=="paired") { # issue warning about case ordering...
+        warning( "calculating paired samples Cohen's d using formula input. Results will be incorrect if cases do not appear in the same order for both levels of the grouping factor") 
+      } 
       
       # since no y is specified, create it now
       y <- try( eval( model.frame(formula = x), envir=parent.frame() ), silent=TRUE)
@@ -111,7 +113,9 @@ cohensD <- function(x = NULL, y = NULL, data = NULL, method = "pooled",  mu = 0,
     # good case 10: x=formula, y=df, method=character -> two sample cohensD from formula input
     if( is(x,"formula") & is(y,"data.frame") & is(method,"character") & length(method)==1) {
       scenario <- "two.sample.formula"
-      if( method=="paired") { scenario <- "bad" } # can't do paired samples this way
+      if( method=="paired") { # issue warning about case ordering...
+        warning( "calculating paired samples Cohen's d using formula input. Results will be incorrect if cases do not appear in the same order for both levels of the grouping factor") 
+      } 
     }
     
   }
@@ -122,7 +126,9 @@ cohensD <- function(x = NULL, y = NULL, data = NULL, method = "pooled",  mu = 0,
       y <- data
       data <- NULL
       scenario <- "two.sample.formula"
-      if( method=="paired") { scenario <- "bad" } # can't do paired samples this way      
+      if( method=="paired") { # issue warning about case ordering...
+        warning( "calculating paired samples Cohen's d using formula input. Results will be incorrect if cases do not appear in the same order for both levels of the grouping factor") 
+      } 
     } 
   }    
   
@@ -134,7 +140,9 @@ cohensD <- function(x = NULL, y = NULL, data = NULL, method = "pooled",  mu = 0,
       x <- formula
       formula <- NULL
       scenario <- "two.sample.formula"
-      if( method=="paired") { scenario <- "bad" } # can't do paired samples this way
+      if( method=="paired") { # issue warning about case ordering...
+        warning( "calculating paired samples Cohen's d using formula input. Results will be incorrect if cases do not appear in the same order for both levels of the grouping factor") 
+      } 
     }  
   }  
 
@@ -145,7 +153,9 @@ cohensD <- function(x = NULL, y = NULL, data = NULL, method = "pooled",  mu = 0,
       x <- formula
       formula <- NULL
       scenario <- "two.sample.formula"
-      if( method=="paired") { scenario <- "bad" } # can't do paired samples this way
+      if( method=="paired") { # issue warning about case ordering...
+        warning( "calculating paired samples Cohen's d using formula input. Results will be incorrect if cases do not appear in the same order for both levels of the grouping factor") 
+      } 
       
       # since no y is specified, create it now
       y <- try( eval( model.frame(formula = x), envir=parent.frame() ), silent=TRUE)
@@ -188,13 +198,15 @@ cohensD <- function(x = NULL, y = NULL, data = NULL, method = "pooled",  mu = 0,
       x <- formula
       formula <- NULL
       scenario <- "two.sample.formula"
-      if( method=="paired") { scenario <- "bad" } # can't do paired samples this way
+      if( method=="paired") { # issue warning about case ordering...
+        warning( "calculating paired samples Cohen's d using formula input. Results will be incorrect if cases do not appear in the same order for both levels of the grouping factor") 
+      } 
     } 
   } 
   
   ####### throw error if scenario is bad  ####### 
   if( scenario == "bad" ) { 
-    stop( "arguments specified do not correspond to a meaningful cohen's d calculation")
+    stop( "arguments specified do not appear to correspond to a meaningful cohen's d calculation")
   }
   
   
