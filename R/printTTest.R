@@ -1,7 +1,7 @@
 # file:    printTTest.R 
 # author:  Dan Navarro
 # contact: daniel.navarro@adelaide.edu.au
-# changed: 19 November 2013
+# changed: 30 January 2014
 
 
 print.TTest <- function( x, ... ) {
@@ -35,14 +35,23 @@ print.TTest <- function( x, ... ) {
   if( x$method == "One sample t-test") {
     cat( "Data variable:  ", x$outcome, "\n" )
     colnames( descriptives ) <- gsub( "^.*\\$","", x$outcome )
-  } else {
+  } 
+  if( x$method == "Student's independent samples t-test" | 
+      x$method == "Welch's independent samples t-test") {
     cat( "Outcome variable:  ", x$outcome, "\n" )
-    cat( "Grouping variable: ", x$group, "\n" )   
+    cat( "Grouping variable: ", x$group, "\n" )         
   }
   if( x$method == "Paired samples t-test" ) {
-    cat( "ID variable:       ", x$id, "\n" )
-    colnames( descriptives ) <- x$group.names
+    if( !is.na( x$id) ) { # two sided formula...
+      cat( "Outcome variable:  ", x$outcome, "\n" )
+      cat( "Grouping variable: ", x$group, "\n" )   
+      cat( "ID variable:       ", x$id, "\n" )
+    } else {
+      cat( "Variables: ", x$outcome[1], ",", x$outcome[2], "\n" )
+    }
+    colnames( descriptives ) <- c(x$group.names, "difference")
   }
+  
   cat("\n")
   
   # print the descriptives

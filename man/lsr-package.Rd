@@ -15,8 +15,8 @@ Functions that I have found useful for teaching purposes.
 \tabular{ll}{
 Package: \tab lsr\cr
 Type: \tab Package\cr
-Version: \tab 0.3.1\cr
-Date: \tab 2013-11-19\cr
+Version: \tab 0.3.2\cr
+Date: \tab 2014-01-31\cr
 License: \tab GPL-3 \cr
 LazyLoad: \tab yes\cr
 }

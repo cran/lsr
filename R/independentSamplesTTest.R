@@ -1,7 +1,7 @@
 # file:    independentSamplesTTest.R 
 # author:  Dan Navarro
 # contact: daniel.navarro@adelaide.edu.au
-# changed: 18 November 2013
+# changed: 23 January 2014
 
 
 independentSamplesTTest <- function(
@@ -60,7 +60,7 @@ independentSamplesTTest <- function(
     
     # copy variables into a data frame if none is specified, and
     # check that the variables are appropriate for a data frame
-    data <- try( eval( model.frame( formula = formula ), 
+    data <- try( eval( model.frame( formula = formula, na.action = na.pass ), 
                        envir=parent.frame() ), silent=TRUE)
     if( is(data,"try-error") ) { 
       stop( "specified variables cannot be coerced to data frame")
@@ -147,7 +147,7 @@ independentSamplesTTest <- function(
   ############ do the statistical calculations ############ 
   
   # find cases with missing data
-  missing <- apply( is.na(df), 1, any) 
+  missing <- apply( is.na(data), 1, any) 
   if( any( missing) ) warning( paste(sum(missing)), " case(s) removed due to missingness")
   data <- data[ !missing, ]
   

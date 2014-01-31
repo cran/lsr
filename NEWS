@@ -1,5 +1,11 @@
 NEWS file for the lsr package
 
+Version 0.3.2
+
+- convenience functions goodnessOfFitTest, associationTest added
+- fixed a couple of bugs in the t-test functions
+- pairedSamplesTTest now supports long-form and wide-form data
+
 Version 0.3.1
 
 - cohensD argument checking is more permissive
