@@ -1,5 +1,11 @@
 NEWS file for the lsr package
 
+Version 0.5
+
+- version number advanced to match next iteration of the book
+- maxFreq and modeOf argument checking is more permissive
+- correlate allows the user to input two numeric vectors instead of data frames / matrices
+
 Version 0.3.2
 
 - convenience functions goodnessOfFitTest, associationTest added

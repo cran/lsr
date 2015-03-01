@@ -1,7 +1,7 @@
 # file:    correlate.R 
 # author:  Dan Navarro
 # contact: daniel.navarro@adelaide.edu.au
-# changed: 13 November 2013
+# changed: 26 August 2014
 
 # compute correlation matrix:
 #  - automatically removes non-numeric variables from the data
@@ -14,6 +14,22 @@ correlate <- function( x, y=NULL, test=FALSE, corr.method="pearson", p.adjust.me
   
   # did the user specify two input matrices?
   two.inputs <- !is.null(y)
+  
+  # allow numeric vectors
+  if( is.vector(x) & is.numeric(x) ) {
+    x <- data.frame(x)
+    call <- match.call()
+    n <- call[[2]]
+    names(x) <- "x.var"
+    if(class(n) == "name") names(x) <- as.character(n)
+  }
+  if( two.inputs & is.vector(y) & is.numeric(y) ) {
+    y <- data.frame(y)
+    call <- match.call()
+    n <- call[[3]]
+    names(y) <- "y.var"
+    if(class(n) == "name") names(y) <- as.character(n)
+  }
   
   # check input matrices are data frames
   if( !(class(x) %in% c("matrix","data.frame") )) {
@@ -141,7 +157,7 @@ correlate <- function( x, y=NULL, test=FALSE, corr.method="pearson", p.adjust.me
         j <- inds.y[b] # the b-th continuous variable in y
         
         #ct <- cor.test( x[,i], y[,j], method=corr.method ) # run the test
-        cttp <- getCT( x[,i], x[,j], corr.method )
+        cttp <- getCT( x[,i], y[,j], corr.method )
         
         
         # store the output

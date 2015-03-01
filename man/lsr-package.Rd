@@ -4,26 +4,26 @@
 \docType{package}
 
 \title{
-Companion package to "Learning Statistics with R" 
+Companion to "Learning Statistics with R"
 }
 
 \description{
-Functions that I have found useful for teaching purposes.
+A collection of tools intended to make introductory statistics easier to teach, including wrappers for common hypothesis tests and basic data manipulation. It accompanies Navarro, D. J. (2015). \emph{Learning Statistics with R: A Tutorial for Psychology Students and Other Beginners}, Version 0.5. [Lecture notes] School of Psychology, University of Adelaide, Adelaide, Australia. ISBN: 978-1-326-18972-3. URL: \url{http://health.adelaide.edu.au/psychology/ccs/teaching/lsr/}.
 }
 
 \details{
 \tabular{ll}{
 Package: \tab lsr\cr
 Type: \tab Package\cr
-Version: \tab 0.3.2\cr
-Date: \tab 2014-01-31\cr
+Version: \tab 0.5\cr
+Date: \tab 2015-03-01\cr
 License: \tab GPL-3 \cr
 LazyLoad: \tab yes\cr
 }
 
-The lsr package is a companion to the lecture notes from which I teach my introductory statistics class. It takes its name from the name of the lecture notes that I teach from, "Learning Statistics with R: A tutorial for psychology students and other beginners". The purpose of the package is to provide a few functions that are useful for beginners, but not necessarily needed by experienced users.
+The lsr package provide a few tools that are useful for students new both to statistics and to R. For example, it includes separate wrapper functions for independent samples t-tests and paired samples t-test, each of which produce output that state the null and alternative hypotheses in a verbose fashion. Other tools are provided to assist students with data manipulation. 
 
---- WARNING: This package is still under development. The functions work for most situations that I envisage them being used for, but some extensions are planned. Additionally, for the moment there are no guarantees of backwards compatibility. For instance, until this warning notice disappears, if I decide that a function is unnecessary, I will delete it rather than deprecate it. Finally, note that very little exception handling has been written at this stage. In short, although the package serves its basic goals (it works for all examples I need for my class), until this notice disappears some care is advised in the use of this package. ---
+WARNING: This package is still under development. The functions work for most situations that I envisage them being used for, but some extensions are planned. In particular, for the moment there are no guarantees of backwards compatibility. Until this notice disappears some care is advised.
 
 }
 
@@ -33,7 +33,9 @@ Author: Daniel Navarro
 Maintainer: Daniel Navarro <daniel.navarro@adelaide.edu.au>
 }
 
-%\references{}
+\references{
+Navarro, D. J. (2015). \emph{Learning Statistics with R: A Tutorial for Psychology Students and Other Beginners}, Version 0.5. [Lecture notes] School of Psychology, University of Adelaide, Adelaide, Australia. ISBN: 978-1-326-18972-3. URL: \url{http://health.adelaide.edu.au/psychology/ccs/teaching/lsr/.}
+}
 
 \keyword{ package }
 

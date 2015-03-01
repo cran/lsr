@@ -1,12 +1,14 @@
 # file:    maxFreq.R 
 # author:  Dan Navarro
 # contact: daniel.navarro@adelaide.edu.au
-# changed: 13 November 2013
+# changed: 18 February 2015
 
 # maxFreq() returns the frequency of the sample mode.
 maxFreq <- function(x, na.rm = TRUE) {
   
-  if( !is.vector(x) ) stop( '"x" must be a vector')
+  if( !is.vector(x) & !is.factor(x) ) {
+    stop( '"x" must be a vector or a factor')
+  }
   if( !is(na.rm,"logical") | length(na.rm) !=1 ) {
     stop( '"na.rm" must be a single logical value')
   }

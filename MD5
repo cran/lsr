@@ -1,13 +1,13 @@
-5951225bdb23ae2d31c4d7cc89487799 *DESCRIPTION
+a54e0a52eb44f9470709d4b7e230869e *DESCRIPTION
 3d6ebfc0a1c9880b16174403433015c7 *NAMESPACE
-b9255bd7db7a8e9870e267ba5d008aa0 *NEWS
+00c811e8d8aab045616c27ee4440fcde *NEWS
 ba24bbdcf1dce11b008054606295ca1f *R/aad.R
 ff1a7d5e5998621f8d50b1112a090bd3 *R/associationTest.R
 b5ce1adc750386670460b7a83256b26a *R/bars.R
 4bc56996f98fbb247d505af3962e46ac *R/ciMean.R
 88d7af7b42785fdcea9c509b128c7dc7 *R/cohensD.R
 9037a500cc3a9207dcc50dce63f6322d *R/colCopy.R
-e829521b954579df6a99a50c5fe06a02 *R/correlate.R
+db1f54911badd3e5bf27947eb4dc4eff *R/correlate.R
 956af9db602eaf97ea41a2fea8e76dae *R/cramersV.R
 78436e1d4a317295da3bd55ae94e597f *R/etaSquared.R
 c1db505e80ff8400e4a44323a5d0b973 *R/expandFactors.R
@@ -15,8 +15,8 @@ c7fe50af301805ae2ba7b497f4049ae7 *R/goodnessOfFitTest.R
 74d3895dc25998abb75f579b97e009ee *R/importList.R
 c43568374c23df8349e511cb4c96b5a6 *R/independentSamplesTTest.R
 26548b0c592486f4995215958ab0e28d *R/longToWide.R
-ce5772ef105fbc4abdb7c53f3e8bb4e8 *R/maxFreq.R
-d7f56d7afdd5899dafa478dcb5e5e8f0 *R/modeOf.R
+2e8b9095658cddb14ad89b115244c18e *R/maxFreq.R
+a322de4ec85cfb86d84ecb1448e28034 *R/modeOf.R
 0b4a245b72e1ca594feb029cb38e2007 *R/oneSampleTTest.R
 a49a2a2ad1def35c71bfa8ba18850fb4 *R/pairedSamplesTTest.R
 1a08115992fea9b23a05e3db5c76340d *R/permuteLevels.R
@@ -31,7 +31,7 @@ e6bc5821191d11005f9fec433c3677b4 *R/standardCoefs.R
 7db103380a4274034bde1fb7ec713b05 *R/unlibrary.R
 61e8f33ae17c2ebfc7f4ae7b884745f4 *R/who.R
 44029239803684048a2e0443b9b9dab6 *R/wideToLong.R
-657c5269794f11925c3d37acf17bbdb8 *inst/CITATION
+1eeab804038fda002717a066ac7c495e *inst/CITATION
 700e5edb038bd672754e519d25cbfe40 *man/aad.Rd
 8e3fa8c628a8d0cd5e4a9e73afaac386 *man/associationTest.Rd
 800758f4271768b8dddcee1231270b5d *man/bars.Rd
@@ -45,7 +45,7 @@ fe6caaad820f69b2da3384309956fe6f *man/goodnessOfFitTest.Rd
 0c8d85b13c87cb324781219e80853950 *man/importList.Rd
 0e07e740208c0a614fa9ad638f897692 *man/independentSamplesTTest.Rd
 d6f9244f222ac216ef365ca5f410f580 *man/longToWide.Rd
-59a94d2687d1869bb45173be731d0b16 *man/lsr-package.Rd
+299d2c054e0a23dd06247be35505dd53 *man/lsr-package.Rd
 39f196b57b3d741700df217e740d80df *man/modeOf.Rd
 8a2ba771438d0d7be4aa441376b4ec30 *man/oneSampleTTest.Rd
 364785f4879953b227a0f7cb3cff7d7d *man/pairedSamplesTTest.Rd
