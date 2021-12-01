@@ -8,6 +8,8 @@
 [![CRAN
 status](https://www.r-pkg.org/badges/version/lsr)](https://CRAN.R-project.org/package=lsr)
 [![R-CMD-check](https://github.com/djnavarro/lsr/workflows/R-CMD-check/badge.svg)](https://github.com/djnavarro/lsr/actions)
+[![codecov](https://codecov.io/gh/djnavarro/lsr/branch/master/graph/badge.svg)](https://app.codecov.io/gh/djnavarro/lsr)
+[![](http://cranlogs.r-pkg.org/badges/last-month/lsr?color=blue)](https://cran.r-project.org/package=lsr)
 <!-- badges: end -->
 
 The goal of lsr is to provide tools intended to make introductory
@@ -33,12 +35,9 @@ devtools::install_github("djnavarro/lsr")
 
 ## Note
 
-I am in the process of updating the package. Assuming that I am able to
-list myself as maintainer using my real name, version 0.5.1 will be a
-minimal update to fix CRAN notes, warnings and errors. Other changes
-such as tidying the code base and fixing bugs are planned for release
-0.6. The long-term plan for the package is maintenance: it is unlikely
-to see new functionality or API changes, but I intend to add unit tests,
+I am in the process of updating the package after a long hiatus. The
+long-term plan for the package is maintenance-focused: it is unlikely to
+see new functionality or API changes, but I intend to extend unit tests,
 improve the internals, and generally make the package more reliable.
 Breaking changes will be avoided except as needed to fix erroneous
 results.
