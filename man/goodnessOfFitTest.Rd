@@ -2,52 +2,62 @@
 % Please edit documentation in R/goodnessOfFitTest.R
 \name{goodnessOfFitTest}
 \alias{goodnessOfFitTest}
-\title{Chi-square test against specified probabilities}
+\title{Chi-square goodness of fit test}
 \usage{
 goodnessOfFitTest(x, p = NULL)
 }
 \arguments{
-\item{x}{Factor variable containing the raw outcomes.}
+\item{x}{A factor variable containing the observed outcomes.}
 
-\item{p}{Numeric variable containing the null-hypothesis probabilities (default = all outcomes equally likely)}
+\item{p}{A numeric vector of hypothesised probabilities, one per level of
+\code{x}. The values must sum to 1. If named, the names must match the
+levels of \code{x} (order does not matter). If omitted, all outcomes are
+assumed to be equally likely.}
 }
 \value{
-An object of class 'gofTest'. When printed, the output is
-organised into four short sections. The first section lists the name
-of the test and the variables included. The second lists the null and
-alternative hypotheses for the test. The third shows the observed
-frequency table, the expected frequency table under the null hypothesis,
-and the probabilities specified by the null. The fourth prints out the
-test results.
+Prints a summary of the test showing the variable name, null and
+alternative hypotheses, a table of observed frequencies, expected
+frequencies, and hypothesised probabilities, and the test results
+(chi-square statistic, degrees of freedom, p-value). The underlying results
+are also returned as a list, so the output can be assigned to a variable
+and inspected if needed.
 }
 \description{
-Convenience function that runs a chi-square goodness of fit
-test against specified probabilities. This is a wrapper function intended
-to be used for pedagogical purposes only.
+Runs a chi-square goodness of fit test to check whether the
+observed frequencies in a categorical variable match a set of hypothesised
+probabilities.
 }
 \details{
-The \code{goodnessOfFitTest} function runs the chi-square
-goodness of fit test of the hypothesis that the outcomes in the factor
-\code{x} were generated according to the probabilities in the vector
-\code{p}. The probability vector \code{p} must be a numeric variable
-of length \code{nlevels(x)}. If no probabilities are specified, all
-outcomes are assumed to be equally likely.
+The test checks whether the observed frequencies for a categorical
+variable are consistent with the probabilities specified in \code{p}.
+
+Missing values in \code{x} are removed before the test is run, and a
+warning is issued if any cases are dropped. If the probabilities in
+\code{p} do not sum exactly to 1, they are rescaled with a warning.
+
+If \code{x} has unused factor levels (levels with zero observed cases), a
+warning is issued. Those levels are included in the test with zero observed
+cases, which changes the degrees of freedom and may give misleading results.
+Call \code{\link{droplevels}} on the data first if this is not intended.
 }
 \examples{
 # raw data
 gender <- factor(
-  c( "male","male","male","male","female","female",
-     "female","male","male","male" ))
+  c(
+    "male", "male", "male", "male", "female", "female",
+    "female", "male", "male", "male"
+  )
+)
 
 # goodness of fit test against the hypothesis that males and
 # females occur with equal frequency
-goodnessOfFitTest( gender )
+goodnessOfFitTest(gender)
 
 # goodness of fit test against the hypothesis that males appear
 # with probability .6 and females with probability .4.
-goodnessOfFitTest( gender, p=c(.4,.6) )
-goodnessOfFitTest( gender, p=c(female=.4,male=.6) )
-goodnessOfFitTest( gender, p=c(male=.6,female=.4) )
+goodnessOfFitTest(gender, p = c(.4, .6))
+goodnessOfFitTest(gender, p = c(female = .4, male = .6))
+goodnessOfFitTest(gender, p = c(male = .6, female = .4))
 
 }
 \seealso{
